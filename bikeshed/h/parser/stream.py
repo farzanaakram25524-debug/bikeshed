@@ -151,14 +151,14 @@ class Stream:
             i += 1
         return Err(start)
 
-    def matchRe(self, start: int, pattern: re.Pattern) -> ResultT[re.Match]:
+    def matchRe(self, start: int, pattern: t.Pattern) -> ResultT[t.Match]:
         match = pattern.match(self._chars, start)
         if match:
             return Ok(match, match.end())
         else:
             return Err(start)
 
-    def searchRe(self, start: int, pattern: re.Pattern) -> ResultT[re.Match]:
+    def searchRe(self, start: int, pattern: t.Pattern) -> ResultT[t.Match]:
         match = pattern.search(self._chars, start)
         if match:
             return Ok(match, match.end())

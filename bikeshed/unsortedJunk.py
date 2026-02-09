@@ -590,7 +590,7 @@ def determineLinkText(el: t.ElementT) -> str:
         # Remove arguments from CSS function autolinks,
         # as they should always be defined argument-less
         # (and this allows filled-in examples to still autolink).
-        linkText = t.cast(re.Match, re.match(r"^([\w-]+)\(.*\)$", contents)).group(1) + "()"
+        linkText = t.cast("t.Match", re.match(r"^([\w-]+)\(.*\)$", contents)).group(1) + "()"
     else:
         linkText = contents
     linkText = h.foldWhitespace(linkText)

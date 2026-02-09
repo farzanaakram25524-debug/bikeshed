@@ -29,7 +29,6 @@ from .main import (
     docPath,
     doEvery,
     englishFromList,
-    flatten,
     groupFromKey,
     intersperse,
     processTextNodes,

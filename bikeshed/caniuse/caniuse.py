@@ -60,7 +60,7 @@ def addCanIUsePanels(doc: t.SpecT) -> list[t.ElementT]:
     return panels
 
 
-def canIUsePanelFor(id: str, data: t.JSONT, update: str, classFromBrowser: dict[str, str]) -> t.ElementT:
+def canIUsePanelFor(id: str, data: t.JSONObject, update: str, classFromBrowser: dict[str, str]) -> t.ElementT:
     panel = h.E.details(
         {"class": "caniuse-status unpositioned", "data-deco": ""},
         h.E.summary({}, "CanIUse"),
@@ -157,14 +157,14 @@ class CanIUseManager:
         self.updated = data["updated"]
         self.agents = data["agents"]
         self.urlFromFeature = data["features"]
-        self.features: t.JSONT = {}
+        self.features: t.JSONObject = {}
 
     def hasFeature(self, featureName: str) -> bool:
         return featureName in self.urlFromFeature
 
-    def getFeature(self, featureName: str) -> t.JSONT:
+    def getFeature(self, featureName: str) -> t.JSONObject:
         if featureName in self.features:
-            return t.cast("t.JSONT", self.features[featureName])
+            return t.cast("t.JSONObject", self.features[featureName])
         if not self.hasFeature(featureName):
             return {}
         data = json.loads(
@@ -172,4 +172,4 @@ class CanIUseManager:
             object_pairs_hook=OrderedDict,
         )
         self.features[featureName] = data
-        return t.cast("t.JSONT", data)
+        return t.cast("t.JSONObject", data)

@@ -19,9 +19,9 @@ if t.TYPE_CHECKING:
     from .parser import StartTag
 
 
-def flatten(arr: t.Iterable) -> t.Iterator:
+def flatten(arr: t.NodesT | tuple[t.NodesT, ...]) -> t.Iterator[t.NodeT]:
     for el in arr:
-        if isinstance(el, collections.abc.Iterable) and not isinstance(el, str) and not etree.iselement(el):
+        if isinstance(el, collections.abc.Iterable) and not isinstance(el, str) and not lxml.etree.iselement(el):
             yield from flatten(el)
         else:
             yield el
@@ -535,7 +535,7 @@ def replaceContents(el: t.ElementT, newElements: t.NodesT | t.Iterable[t.NodesT]
 
 
 def replaceWithContents(el: t.ElementT) -> t.NodesT | None:
-    return replaceNode(el, childNodes(el, clear=True))
+    return replaceNode(el, t.cast("t.NodesT", childNodes(el, clear=True)))
 
 
 def moveContents(toEl: t.ElementT, fromEl: t.ElementT) -> None:
@@ -1006,8 +1006,8 @@ def replaceMacrosTextly(text: str, macros: t.Mapping[str, str], context: str) ->
     # Same as replaceMacros(), but does the substitution
     # directly on the text, rather than relying on the
     # html parser to have preparsed the macro syntax
-    def macroReplacer(match: re.Match) -> str:
-        fullText = t.cast(str, match.group(0))
+    def macroReplacer(match: t.Match) -> str:
+        fullText = match.group(0)
         innerText = match.group(2).lower() or ""
         optional = match.group(3) == "?"
         if fullText.startswith("\\"):

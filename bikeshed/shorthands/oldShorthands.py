@@ -51,23 +51,23 @@ def transformProductionGrammars(doc: t.SpecT) -> None:
 
     hashMultRe = re.compile(r"#{\s*\d+(\s*,(\s*\d+)?)?\s*}")
 
-    def hashMultReplacer(match: re.Match) -> t.ElementT:
+    def hashMultReplacer(match: t.Match) -> t.ElementT:
         return h.E.a({"data-link-type": "grammar", "data-lt": "#", "for": ""}, match.group(0))
 
     multRe = re.compile(r"{\s*\d+\s*}")
 
-    def multReplacer(match: re.Match) -> t.ElementT:
+    def multReplacer(match: t.Match) -> t.ElementT:
         return h.E.a({"data-link-type": "grammar", "data-lt": "{A}", "for": ""}, match.group(0))
 
     multRangeRe = re.compile(r"{\s*\d+\s*,(\s*\d+)?\s*}")
 
-    def multRangeReplacer(match: re.Match) -> t.ElementT:
+    def multRangeReplacer(match: t.Match) -> t.ElementT:
         return h.E.a({"data-link-type": "grammar", "data-lt": "{A,B}", "for": ""}, match.group(0))
 
     simpleRe = re.compile(r"(\?|!|#|\*|\+|\|\||\||&amp;&amp;|&&|,)(?!')")
     # Note the negative-lookahead, to avoid matching delim tokens.
 
-    def simpleReplacer(match: re.Match) -> t.ElementT:
+    def simpleReplacer(match: t.Match) -> t.ElementT:
         return h.E.a(
             {"data-link-type": "grammar", "data-lt": match.group(0), "for": ""},
             match.group(0),
@@ -120,8 +120,8 @@ strongRe = re.compile(
 )
 
 
-def strongReplacer(match: re.Match) -> t.NodeT:
-    text = t.cast(str, match.group(1)).replace("\\**", "**")
+def strongReplacer(match: t.Match) -> t.NodeT:
+    text = match.group(1).replace("\\**", "**")
     return h.E.strong({"bs-autolink-syntax": match.group(0)}, text)
 
 
@@ -138,15 +138,15 @@ emRe = re.compile(
 )
 
 
-def emReplacer(match: re.Match) -> t.NodeT:
-    text = t.cast(str, match.group(1)).replace("\\*", "*")
+def emReplacer(match: t.Match) -> t.NodeT:
+    text = match.group(1).replace("\\*", "*")
     return h.E.em({"bs-autolink-syntax": match.group(0)}, text)
 
 
 escapedRe = re.compile(r"\\\*")
 
 
-def escapedReplacer(match: re.Match) -> t.NodeT:  # pylint: disable=unused-argument
+def escapedReplacer(match: t.Match) -> t.NodeT:  # pylint: disable=unused-argument
     return "*"
 
 

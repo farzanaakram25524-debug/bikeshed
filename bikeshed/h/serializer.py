@@ -198,7 +198,7 @@ class Serializer:
             return True
         return False
 
-    def justWS(self, block: t.NodesT) -> bool:
+    def justWS(self, block: Nodes) -> bool:
         if self.isElement(block):
             return False
         return len(block) == 1 and isinstance(block[0], str) and block[0].strip() == ""
